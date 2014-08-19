@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>Estratti Italiani</title>
+
+   <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <!-- Custom styles for this template -->
+<style>
+body {
+  min-height: 2000px;
+  padding-top: 60px;
+}
+.btn-group{width:100%;}
+.btn-default{width:20%}
+ul.list{list-style:none;}
+#map{width:100%; height:500px;}
+</style>
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Estratti OSM</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="index.html">Home</a></li>
+            <li><a href="regioni.html">Regioni</a></li>
+            <li><a href="comuni.html">Comuni</a></li>
+            <li><a href="note.html">Note</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="container main">
+      <div class="row">
+      <div class="col-md-6">
+      <h1>Estratti OSM</h1>
+     <div id="cities">
+      <div class="input-group">
+      <input placeholder="Cerca" id="searchhere" class="search form-control" />
+      <span class="input-group-btn">
+        <button class="btn" type="button" onclick="setData('')">Clear</button>
+      </span>
+    </div>
+      <ul id="appendhere" class="list">
+      </ul>
+      </div>
+        </div>
+     <div class="col-md-6">
+            <div id="map"></div>
+        </div>
+     </div>
+
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.1.1/list.min.js" ></script>
+
+<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+/*
+http://getbootstrap.com/examples/navbar-fixed-top/
+http://youmightnotneedjquery.com/
+http://listjs.com/
+*/
+var userList;
+
+function setData(name){
+        userList.search(name);
+        document.getElementById('searchhere').value=name;
+ }
+
+function load(){
+    request = new XMLHttpRequest();
+    request.open('GET', 'regioni.geojson', true);
+
+    request.onload = function() {
+        if (request.status >= 200 && request.status < 400){
+          // Success!
+          data = JSON.parse(request.responseText);
+          var parent=document.getElementById("appendhere");
+
+        Array.prototype.forEach.call(data.features, function(el, i){
+            var name=el.properties.name;
+	    var rel=el.properties.id;
+            var newEl='<h3 class="city">'+name+'</h3><div class="btn-group"><a class="btn btn-default" href="regioni/osm/'+name+'---'+rel+'.osm.zip">OSM</a><a class="btn btn-default" href="regioni/pbf/'+name+'---'+rel+'.pbf">PBF</a><a class="btn btn-default" href="regioni/shape/'+name+'---'+rel+'.shp.zip">SHP</a></div>';
+            var li=document.createElement('li');
+            li.innerHTML=newEl;
+            parent.appendChild(li);
+        });
+
+        var options = {
+          valueNames: [ 'city' ]
+        };
+        userList = new List('cities', options);
+        if(window.location.hash!=="")
+        setData(window.location.href.split('#')[1]);
+          } else {
+          }
+      L.geoJson(data,{onEachFeature: function(feature,layer){
+        layer.on('click', function(e){
+        setData(feature.properties.name);
+        });
+      },
+      style: {
+        "color": "#000",
+        "weight": 1,
+        "opacity": 0.65
+      }
+      }).addTo(map);
+    };
+
+    request.onerror = function() {
+      // There was a connection error of some sort
+    };
+
+    request.send();
+}
+
+
+var map = L.map('map',{doubleClickZoom:false}).setView([42.041,12.129], 5);
+L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+     document.onload=load();
+    </script>
+  </body>
+</html>
