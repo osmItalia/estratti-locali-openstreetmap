@@ -78,7 +78,8 @@ my $command= "";
         $year += 1900;
         my $date_now = sprintf("%04d-%02d-%02d", $year ,$mon ,$mday);
 
-	#copio i README
+        #copio i README
+
         $command = " perl -p -e 's/{{{USERS_LIST}}}/$utenti/g ;' -e 's/{{{DATE}}}/ $date_now/g ;' -e 's/{{{BASE_URL}}}{{{FILE_NAME}}}/ $base_url $filename/g'  /mnt/scripts/text/README.template.generic.txt >  $dirName/osm/README-$nome.txt";
         system($command);
         $command = " perl -p -e 's/{{{USERS_LIST}}}/$utenti/g ;' -e 's/{{{DATE}}}/ $date_now/g ;' -e 's/{{{BASE_URL}}}{{{FILE_NAME}}}/ $base_url $filename/g'  /mnt/scripts/text/LEGGIMI.template.generic.txt >  $dirName/osm/LEGGIMI-$nome.txt";
@@ -88,9 +89,17 @@ my $command= "";
         $command = "cd $dirName/shape ; mkdir $nome ; cd $nome ; cp $dirName/osm/README-$nome.txt . ; cp  $dirName/osm/LEGGIMI-$nome.txt . ; /var/opt/osmium/osmjs/osmjs -l array -j /var/opt/osmium/osmjs/js/config.js -i /var/opt/osmium/osmjs/js/osm2shape.js $dirName/pbf/$nome---$rel.pbf 1>/dev/null && zip -m $nome---$rel.zip * 1>/dev/null ; mv *.zip .. ; cd .. ; rm -rf $nome  & ";
         system($command);
 
+        #genero lo spatialite
+        print "ricavo lo spatialite $nome\n";
+        $command = "cp $dirName/osm/README-$nome.txt  $dirName/sqlite ; cp  $dirName/osm/LEGGIMI-$nome.txt  $dirName/sqlite ; rm -f $dirName/sqlite/$nome---$rel.sqlite ; ogr2ogr -f SQLite -dsco spatialite=yes  $dirName/sqlite/$nome---$rel.sqlite $dirName/osm/$nome---$rel.osm  -gt 20000  --config OGR_SQLITE_SYNCHRONOUS OFF ";
+        system($command);
+
+        #zippo file osm e spatialite
         print "zippo $nome\n";
         $command = "zip -q -j -m $dirName/osm/$nome---$rel.osm.zip $dirName/osm/$nome---$rel.osm $dirName/osm/README-$nome.txt $dirName/osm/LEGGIMI-$nome.txt 1>/dev/null ; chmod 644  $dirName/osm/$nome---$rel.osm.zip  &";
         system($command);
+        $command = "zip -q -j -m $dirName/sqlite/$nome---$rel.sqlite.zip $dirName/sqlite/$nome---$rel.sqlite $dirName/sqlite/README-$nome.txt $dirName/sqlite/LEGGIMI-$nome.txt 1>/dev/null ; chmod 644  $dirName/sqlite/$nome---$rel.sqlite.zip  &";
+        system($command);
 
-    	}
- 
+        }
+
