@@ -130,7 +130,7 @@ map.spin(true);
         Array.prototype.forEach.call(data.features, function(el, i){
             var name=el.properties.name;
 	    var rel=el.properties.id;
-            var newEl='<h3 class="city">'+name+'</h3><div class="btn-group"><a class="btn btn-default" href="regioni/osm/'+name+'---'+rel+'.osm.zip">OSM</a><a class="btn btn-default" href="regioni/pbf/'+name+'---'+rel+'.pbf">PBF</a><a class="btn btn-default" href="regioni/shape/'+name+'---'+rel+'.shp.zip">SHP</a></div>';
+            var newEl='<h3 class="city">'+name+'</h3><div class="btn-group"><a class="btn btn-default" href="regioni/osm/'+name+'---'+rel+'.osm.zip">OSM</a><a class="btn btn-default" href="regioni/pbf/'+name+'---'+rel+'.pbf">PBF</a><a class="btn btn-default" href="regioni/shape/'+name+'---'+rel+'.shp.zip">SHP</a><a class="btn btn-default" href="regioni/sqlite/'+name+'---'+rel+'.sqlite.zip">Spatialite</a></div>';
             var li=document.createElement('li');
             li.innerHTML=newEl;
             parent.appendChild(li);
