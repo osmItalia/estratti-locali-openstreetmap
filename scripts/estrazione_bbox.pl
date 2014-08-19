@@ -52,46 +52,45 @@ while (my $row = <$fh>) {
 	$bbox = $p[2];
 	
 	print "Estraggo $nome  \n";
-my $command= "";	
-	  $command = "/usr/local/bin/osmconvert $pbfName -t=/mnt/tmp/osmconvert_tempfile -b=$bbox  --hash-memory=1000 --complete-ways --complex-ways --out-pbf > $dirName/pbf/$nome---$rel.pbf ";
+my $command= "";
+          $command = "/usr/local/bin/osmconvert $pbfName -t=/mnt/tmp/osmconvert_tempfile -b=$bbox  --hash-memory=1000 --complete-ways --complex-ways --out-pbf > $dirName/pbf/$nome---$rel.pbf ";
          my $null = `$command `;
 
-	 $command =  " chmod 644 $dirName/pbf/$nome---$rel.pbf ";
+         $command =  " chmod 644 $dirName/pbf/$nome---$rel.pbf ";
          $null = `$command `;
 
-	print "converto $nome da pbf in osm\n";
-        #$command = "osmconvert $dirName/pbf/$nome---$rel.pbf | bzip2 > $dirName/osm/$nome---$rel.osm.bz2 ; chmod 644  $dirName/osm/$nome---$rel.osm.bz2  &";
+        print "converto $nome da pbf in osm\n";
         $command = "/usr/local/bin/osmconvert  -t=/mnt/tmp/osmconvert_tempfile $dirName/pbf/$nome---$rel.pbf > $dirName/osm/$nome---$rel.osm ";
         system($command);
 
-	# prima di zippare il file devo ricavare i dati da inserire nel file README
-	print "estraggo nomi utenti da file $nome \n";	
-	$command = "grep user  $dirName/osm/$nome---$rel.osm |  perl -nle 'print \$1 if /user=\"(.*?)\"/' | sort | uniq ";
+        # prima di zippare il file devo ricavare i dati da inserire nel file README
+        print "estraggo nomi utenti da file $nome \n";
+        $command = "grep user  $dirName/osm/$nome---$rel.osm |  perl -nle 'print \$1 if /user=\"(.*?)\"/' | sort | uniq | tr '\n' ',' ";
         my $utenti= `$command `;
 
-	chop($utenti); #tolgo l'ultima virgola
+        chop($utenti); #tolgo l'ultima virgola
 
-	my $base_url = 'http:\/\/osm-toolserver-italia.wmflabs.org';
-	my $filename = '';
-	
-	my $n; my $mday; my $mon; my $year;
-	($n,$n,$n,$mday,$mon,$year,$n,$n,$n) = localtime();
-	$year += 1900;
-	my $date_now = sprintf("%04d-%02d-%02d", $year ,$mon ,$mday);	
-	
+        my $base_url = 'http:\/\/osm-toolserver-italia.wmflabs.org\/estratti\/';
+        my $filename = '';
+
+        my $n; my $mday; my $mon; my $year;
+        ($n,$n,$n,$mday,$mon,$year,$n,$n,$n) = localtime();
+        $year += 1900;
+        my $date_now = sprintf("%04d-%02d-%02d", $year ,$mon ,$mday);
+
 	#copio i README
-
-	$command = " perl -p -e 's/{{{USERS_LIST}}}/$utenti/g ;' -e 's/{{{DATE}}}/ $date_now/g ;' -e 's/{{{BASE_URL}}}{{{FILE_NAME}}}/ $base_url $filename/g'  /mnt/scripts/text/README.template.generic.txt >  $dirName/osm/README-$nome.txt";	
+        $command = " perl -p -e 's/{{{USERS_LIST}}}/$utenti/g ;' -e 's/{{{DATE}}}/ $date_now/g ;' -e 's/{{{BASE_URL}}}{{{FILE_NAME}}}/ $base_url $filename/g'  /mnt/scripts/text/README.template.generic.txt >  $dirName/osm/README-$nome.txt";
         system($command);
-	$command = " perl -p -e 's/{{{USERS_LIST}}}/$utenti/g ;' -e 's/{{{DATE}}}/ $date_now/g ;' -e 's/{{{BASE_URL}}}{{{FILE_NAME}}}/ $base_url $filename/g'  /mnt/scripts/text/LEGGIMI.template.generic.txt >  $dirName/osm/LEGGIMI-$nome.txt";	
-        system($command);
-
-	print "zippo $nome\n";
-	$command = "zip -q -j -m $dirName/osm/$nome---$rel.osm.zip $dirName/osm/$nome---$rel.osm $dirName/osm/README-$nome.txt $dirName/osm/LEGGIMI-$nome.txt 1>/dev/null ; chmod 644  $dirName/osm/$nome---$rel.osm.zip  &";
+        $command = " perl -p -e 's/{{{USERS_LIST}}}/$utenti/g ;' -e 's/{{{DATE}}}/ $date_now/g ;' -e 's/{{{BASE_URL}}}{{{FILE_NAME}}}/ $base_url $filename/g'  /mnt/scripts/text/LEGGIMI.template.generic.txt >  $dirName/osm/LEGGIMI-$nome.txt";
         system($command);
 
-	print "ricavo lo shape $nome\n";
-	$command = "cd $dirName/shape ; mkdir $nome ; cd $nome ; /var/opt/osmium/osmjs/osmjs -l array -j /var/opt/osmium/osmjs/js/config.js -i /var/opt/osmium/osmjs/js/osm2shape.js $dirName/pbf/$nome---$rel.pbf 1>/dev/null && zip -m $nome---$rel.zip * 1>/dev/null ; mv *.zip .. ; cd .. ; rm -rf $nome  & ";
+        print "ricavo lo shape $nome\n";
+        $command = "cd $dirName/shape ; mkdir $nome ; cd $nome ; cp $dirName/osm/README-$nome.txt . ; cp  $dirName/osm/LEGGIMI-$nome.txt . ; /var/opt/osmium/osmjs/osmjs -l array -j /var/opt/osmium/osmjs/js/config.js -i /var/opt/osmium/osmjs/js/osm2shape.js $dirName/pbf/$nome---$rel.pbf 1>/dev/null && zip -m $nome---$rel.zip * 1>/dev/null ; mv *.zip .. ; cd .. ; rm -rf $nome  & ";
         system($command);
+
+        print "zippo $nome\n";
+        $command = "zip -q -j -m $dirName/osm/$nome---$rel.osm.zip $dirName/osm/$nome---$rel.osm $dirName/osm/README-$nome.txt $dirName/osm/LEGGIMI-$nome.txt 1>/dev/null ; chmod 644  $dirName/osm/$nome---$rel.osm.zip  &";
+        system($command);
+
     	}
  
