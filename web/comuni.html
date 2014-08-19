@@ -48,9 +48,9 @@ ul.list{list-style:none;}
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="index.html">Home</a></li>
+            <li><a href="index.html">Home</a></li>
             <li><a href="regioni.html">Regioni</a></li>
-            <li><a href="comuni.html">Comuni</a></li>
+            <li class="active"><a href="comuni.html">Comuni</a></li>
             <li><a href="note.html">Note</a></li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -90,6 +90,9 @@ ul.list{list-style:none;}
 
 <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    <script src="js/spin.min.js" ></script>
+    <script src="js/leaflet.spin.js" ></script>
 <script>
 /*
 http://getbootstrap.com/examples/navbar-fixed-top/
@@ -97,13 +100,23 @@ http://youmightnotneedjquery.com/
 http://listjs.com/
 */
 var userList;
-
+var layerList=[];
+var layerSelected=[];
 function setData(name){
         userList.search(name);
         document.getElementById('searchhere').value=name;
  }
 
+ function colorizeData(arr){
+     for (var i in arr) {
+     var city=arr[i]._values['city'];
+     layerList[city].setStyle({color: '#f00'});
+     layerSelected.push(layerList[city]);
+     }
+ }
+ 
 function load(){
+map.spin(true);
     request = new XMLHttpRequest();
     request.open('GET', 'comuni.geojson', true);
 
@@ -116,38 +129,57 @@ function load(){
         Array.prototype.forEach.call(data.features, function(el, i){
             var name=el.properties.name;
 	    var rel=el.properties.id;
-            var newEl='<h3 class="city">'+name+'</h3><div class="btn-group"><a class="btn btn-default" href="comuni/osm/'+name+'---'+rel+'.osm.zip">OSM</a><a class="btn btn-default" href="comuni/pbf/'+name+'---'+rel+'.pbf">PBF</a><a class="btn btn-default" href="comuni/shape/'+name+'---'+rel+'.shp.zip">SHP</a></div>';
+            var newEl='<h3 class="city">'+name+'</h3><div class="btn-group"><a class="btn btn-default" href="regioni/osm/'+name+'---'+rel+'.osm.zip">OSM</a><a class="btn btn-default" href="regioni/pbf/'+name+'---'+rel+'.pbf">PBF</a><a class="btn btn-default" href="regioni/shape/'+name+'---'+rel+'.shp.zip">SHP</a></div>';
             var li=document.createElement('li');
             li.innerHTML=newEl;
             parent.appendChild(li);
         });
 
-        var options = {
-          valueNames: [ 'city' ]
-        };
-        userList = new List('cities', options);
+        
 
-          } else {
-          }
       L.geoJson(data,{onEachFeature: function(feature,layer){
+        layerList[feature.properties.name]=layer;
         layer.on('click', function(e){
         setData(feature.properties.name);
         });
       },
       style: {
-        "color": "#000",
+        "color": "#8A8A7B",
         "weight": 1,
         "opacity": 0.65
       }
       }).addTo(map);
+       
+       var options = {
+          valueNames: [ 'city' ]
+        };
+        userList = new List('cities', options);
+        
+        userList.on('searchComplete',function(){
+        for (var j in layerSelected)
+             layerSelected[j].setStyle({color: '#8A8A7B'});
+        layerSelected=[];
+            if(userList.searched==false) return;
+                colorizeData(userList.visibleItems);
+        //userList.visibleItems[0]._values['city']
+        });
+        
+        if(window.location.hash!=="")
+        setData(window.location.href.split('#')[1]);
+          } else {
+          }
+      map.spin(false); 
     };
 
     request.onerror = function() {
+    map.spin(false); 
       // There was a connection error of some sort
     };
 
     request.send();
 }
+
+
 var map = L.map('map',{doubleClickZoom:false}).setView([42.041,12.129], 5);
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
