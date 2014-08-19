@@ -100,6 +100,10 @@ my $command= "";
         system($command);
         $command = "zip -q -j -m $dirName/sqlite/$nome---$rel.sqlite.zip $dirName/sqlite/$nome---$rel.sqlite $dirName/sqlite/README-$nome.txt $dirName/sqlite/LEGGIMI-$nome.txt 1>/dev/null ; chmod 644  $dirName/sqlite/$nome---$rel.sqlite.zip  &";
         system($command);
+        
+        #estraggo il poly
+        $command = "perl /mnt/scripts/getbound.pl -o $dirName/poly/$nome---$rel.poly $rel ";
+        system($command);
 
         }
 
