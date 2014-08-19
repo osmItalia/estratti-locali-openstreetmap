@@ -3,7 +3,9 @@
 ==INFORMAZIONI SPECIFICHE SUI FILE SHAPE==
 
 I file shape presenti in questo archivio sono codificati
-con sistema di riferimento WGS_1984_UTM_Zone_32N
+con sistema di riferimento WGS_1984_UTM_Zone_32N 
+quindi EPSG:32632
+http://spatialreference.org/ref/epsg/wgs-84-utm-zone-32n/
 
 Sono presenti i seguenti layer:
 
