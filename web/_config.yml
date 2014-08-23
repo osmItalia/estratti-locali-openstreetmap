@@ -1,0 +1,11 @@
+name: "Estratti OSM"
+description: ""
+
+url: "http://localhost:4000"
+baseurl: ""
+
+paginate: 10
+
+markdown: rdiscount
+permalink: pretty
+highlighter: pygments
