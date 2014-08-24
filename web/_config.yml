@@ -1,8 +1,8 @@
 name: "Estratti OSM"
 description: ""
 
-url: "osm-toolserver-italia.wmflabs.org/estratti/"
-baseurl: ""
+url: "http://osm-toolserver-italia.wmflabs.org/estratti/"
+baseurl: "/estratti"
 
 paginate: 10
 

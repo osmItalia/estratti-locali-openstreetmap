@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <!--link rel="icon" href="/favicon.ico"-->
+    <!--link rel="icon" href="/estratti/favicon.ico"-->
 
     <title>Comuni – Estratti OSM</title>
 
@@ -49,10 +49,10 @@ ul.list{list-style:none;}
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="/">Home</a></li>
-            <li><a href="/regioni/">Regioni</a></li>
-            <li><a href="/comuni/">Comuni</a></li>
-            <li><a href="/note/">Note</a></li>
+            <li><a href="/estratti/">Home</a></li>
+            <li><a href="/estratti/regioni/">Regioni</a></li>
+            <li><a href="/estratti/comuni/">Comuni</a></li>
+            <li><a href="/estratti/note/">Note</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -91,8 +91,8 @@ ul.list{list-style:none;}
 <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
-    <script src="/js/spin.min.js" ></script>
-    <script src="/js/leaflet.spin.js" ></script>
+    <script src="/estratti/js/spin.min.js" ></script>
+    <script src="/estratti/js/leaflet.spin.js" ></script>
 
 <script>
 /*
@@ -119,7 +119,7 @@ function setData(name){
 function load(){
 map.spin(true);
     request = new XMLHttpRequest();
-    request.open('GET', '/js/comuni.geojson', true);
+    request.open('GET', '/estratti/js/comuni.geojson', true);
 
     request.onload = function() {
         if (request.status >= 200 && request.status < 400){
