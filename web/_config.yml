@@ -9,3 +9,5 @@ paginate: 10
 markdown: rdiscount
 permalink: pretty
 highlighter: pygments
+
+permalink: /:categories/:title/

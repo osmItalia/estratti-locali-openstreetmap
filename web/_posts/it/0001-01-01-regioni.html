@@ -1,0 +1,134 @@
+---
+title: Regioni
+layout: default
+lang: it
+permalink: it/regioni
+name: regioni
+---
+      <div class="row">
+      <div class="col-md-6">
+      <h1>Estratti OSM</h1>
+     <div id="cities">
+      <div class="input-group">
+      <input placeholder="Cerca" id="searchhere" class="search form-control" />
+      <span class="input-group-btn">
+        <button class="btn" type="button" onclick="setData('')">Clear</button>
+      </span>
+    </div>
+      <ul id="appendhere" class="list">
+      </ul>
+      </div>
+        </div>
+     <div class="col-md-6">
+            <div id="map"></div>
+        </div>
+     </div>
+
+    </div> <!-- /container -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.1.1/list.min.js" ></script>
+
+<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    <script src="{{site.baseurl}}/js/spin.min.js" ></script>
+    <script src="{{site.baseurl}}/js/leaflet.spin.js" ></script>
+
+<script>
+/*
+http://getbootstrap.com/examples/navbar-fixed-top/
+http://youmightnotneedjquery.com/
+http://listjs.com/
+*/
+var userList;
+var layerList=[];
+var layerSelected=[];
+function setData(name){
+        userList.search(name);
+        document.getElementById('searchhere').value=name;
+ }
+
+ function colorizeData(arr){
+     for (var i in arr) {
+     var city=arr[i]._values['city'];
+     layerList[city].setStyle({color: '#f00'});
+     layerSelected.push(layerList[city]);
+     }
+ }
+ 
+function load(){
+map.spin(true);
+    request = new XMLHttpRequest();
+    request.open('GET', '{{site.baseurl}}/js/regioni.geojson', true);
+
+    request.onload = function() {
+        if (request.status >= 200 && request.status < 400){
+          // Success!
+          data = JSON.parse(request.responseText);
+          var parent=document.getElementById("appendhere");
+
+        Array.prototype.forEach.call(data.features, function(el, i){
+            var name=el.properties.name;
+	        var rel=el.properties.id;
+	        var url='{{site.baseurl}}/regioni';
+            var newEl='<h3 class="city">'+name+'</h3><div class="btn-group"><a class="btn btn-default" href="'+url+'/osm/'+name+'---'+rel+'.osm.zip">OSM</a><a class="btn btn-default" href="'+url+'/pbf/'+name+'---'+rel+'.pbf">PBF</a><a class="btn btn-default" href="'+url+'/shape/'+name+'---'+rel+'.zip">SHP</a><a class="btn btn-default" href="'+url+'/sqlite/'+name+'---'+rel+'.sqlite.zip">Spatialite</a><a class="btn btn-default" href="'+url+'/poly/'+name+'---'+rel+'.poly">Poly</a></div>';
+            var li=document.createElement('li');
+            li.innerHTML=newEl;
+            parent.appendChild(li);
+        });
+
+        
+
+      L.geoJson(data,{onEachFeature: function(feature,layer){
+        layerList[feature.properties.name]=layer;
+        layer.on('click', function(e){
+        setData(feature.properties.name);
+        });
+      },
+      style: {
+        "color": "#8A8A7B",
+        "weight": 1,
+        "opacity": 0.65
+      }
+      }).addTo(map);
+       
+       var options = {
+          valueNames: [ 'city' ]
+        };
+        userList = new List('cities', options);
+        
+        userList.on('searchComplete',function(){
+        for (var j in layerSelected)
+             layerSelected[j].setStyle({color: '#8A8A7B'});
+        layerSelected=[];
+            if(userList.searched==false) return;
+                colorizeData(userList.visibleItems);
+        //userList.visibleItems[0]._values['city']
+        });
+        
+        if(window.location.hash!=="")
+        setData(window.location.href.split('#')[1]);
+          } else {
+          }
+      map.spin(false); 
+    };
+
+    request.onerror = function() {
+    map.spin(false); 
+      // There was a connection error of some sort
+    };
+
+    request.send();
+}
+
+
+var map = L.map('map',{doubleClickZoom:false}).setView([42.041,12.129], 5);
+L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+     document.onload=load();
+    </script>
