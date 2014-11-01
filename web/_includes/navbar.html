@@ -13,10 +13,10 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-left">
-            <li><a href="{{site.baseurl}}/{{page.lang}}/">Home</a></li>
-            <li><a href="{{site.baseurl}}/{{page.lang}}/regioni/">Regioni</a></li>
-            <li><a href="{{site.baseurl}}/{{page.lang}}/comuni/">Comuni</a></li>
-            <li><a href="{{site.baseurl}}/{{page.lang}}/notes/">Note</a></li>
+            <li><a href="{{site.baseurl}}/{{page.lang}}/">{{site.lang[page.lang].home}}</a></li>
+            <li><a href="{{site.baseurl}}/{{page.lang}}/regioni/">{{site.lang[page.lang].regioni}}</a></li>
+            <li><a href="{{site.baseurl}}/{{page.lang}}/comuni/">{{site.lang[page.lang].comuni}}</a></li>
+            <li><a href="{{site.baseurl}}/{{page.lang}}/notes/">{{site.lang[page.lang].note}}</a></li>
           </ul>
 
 			{% assign list=site.posts | where:"name", page.name | sort: 'path' %}

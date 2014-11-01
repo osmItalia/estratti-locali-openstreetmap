@@ -11,3 +11,15 @@ permalink: pretty
 highlighter: pygments
 
 permalink: /:categories/:title/
+
+lang:
+  it:
+    home: "Home"
+    regioni: "Regioni"
+    comuni: "Comuni"
+    note: "Note"
+  en:
+    home: "Home"
+    regioni: "Regions"
+    comuni: "Municipalities"
+    note: "Notes"
