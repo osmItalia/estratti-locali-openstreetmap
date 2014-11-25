@@ -76,6 +76,7 @@ my $command= "";
         my $n; my $mday; my $mon; my $year;
         ($n,$n,$n,$mday,$mon,$year,$n,$n,$n) = localtime();
         $year += 1900;
+        $mon += 1;
         my $date_now = sprintf("%04d-%02d-%02d", $year ,$mon ,$mday);
 
         #copio i README
