@@ -1,3 +1,6 @@
+##
+un sistema per scaricare dati aggiornati quotidianamente prelevati da OpenStreetMap. L'obiettivo è di rendere disponibile un sistema per mostrare agli utenti non interni al sistema quale sia la dinamicità dei dati presenti nel DB OSM. 
+
 ## appunti
 
 1. download dato giornaliero da geofabrik
