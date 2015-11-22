@@ -8,7 +8,7 @@ L'obiettivo è di rendere disponibile una piattaforma che permetta di scaricare 
 4. statistiche base generate su base settimanale: https://github.com/napo/osm-italy-stats
 5. statistiche con km di strade, strade con nome, 
 6. schema URL: http://estratti.openstreetmap.it/it_IT/italia/lombardia/pavia/san-genesio-ed-uniti.html
-7. generare HTML funzionante
+7. generare HTML funzionante, tipo http://ironsummitmedia.github.io/startbootstrap-blog-post/
 
 ## nice to have
 1. statistiche tipo "dapal"
