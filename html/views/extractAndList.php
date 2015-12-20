@@ -61,7 +61,7 @@ $dt=filemtime("/srv/downloads/italy-latest.osm.pbf");
         <div class="row">
                 <div class="col-md-12">
             <h3 class="text-left text-primary"><?php echo __('PROVINCE_IN_REGION').' '.$region;?></h3>
-            <p><?php echo __('PROVINCE_IN_REGION');?></p>
+            <p><?php echo __('PROVINCE_IN_REGION_HELP');?></p>
             <?php
                $letter='';
                $url=$baseUrl;

@@ -3,7 +3,7 @@
 
     <ol class="breadcrumb">
      <li><a href="<?php echo $baseUrl; ?>"><span class="glyphicon glyphicon-folder-open" data-toggle="tooltip"
-     data-placement="bottom" title="navigazione" style="color:black;padding-right: 6px;"> </span><?php echo __('Extracts')?></a></li>
+     data-placement="bottom" title="navigazione" style="color:black;padding-right: 6px;"> </span><?php echo __('EXTRACTS')?></a></li>
         <?php if (isset($region)) {
             echo '<li><a href="'.$baseUrl.'/'.rawurlencode($region_safe).'/">'.$region.'</a></li>';
 }
