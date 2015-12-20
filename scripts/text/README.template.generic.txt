@@ -8,6 +8,8 @@ a new version of this file will be made available at:
 {{{BASE_URL}}}{{{FILE_NAME}}}
 
 This archive is the product of the italian OpenStreetMap community
-and of the following wonderful people: {{{USERS_LIST}}}
+and of the following wonderful people: 
+{{{USERS_LIST}}}
 
 For further information: press@openstreetmap.it
+

@@ -10,6 +10,8 @@ I file vengono generati ogni giorno e sono disponibili al seguente URL:
 {{{BASE_URL}}}{{{FILE_NAME}}}
 
 Questo archivio è il prodotto della comunità italiana di OpenStreetMap
-e delle seguenti meravigliose persone: {{{USERS_LIST}}}
+e delle seguenti meravigliose persone: 
+{{{USERS_LIST}}}
 
 Per contatti: press@openstreetmap.it
+
