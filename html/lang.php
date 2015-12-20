@@ -20,13 +20,21 @@ function __($string) {
 
 function setLang($lang) {
     setcookie("extractLang", $lang, time()+31536000);
+    Flight::set('lang',$lang);
 }
 
 function getLang() {
     if (!isset($_COOKIE["extractLang"])) {
         setLang('it');
-        return 'it';
     }
+    if(Flight::has('lang'))
+      return Flight::get('lang');
     return $_COOKIE["extractLang"];
+}
+
+function checkLang() {
+    if (isset(Flight::request()->query['lang'])) {
+        setLang(substr(Flight::request()->query['lang'],0,2));
+    }
 }
 ?>

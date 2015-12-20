@@ -6,7 +6,7 @@ require 'lang.php';
 Flight::register('db', 'PDO', array('pgsql:host=localhost;port=5432;dbname=osm;user=osm;'));
 
 Flight::route('/about', function () {
-    if (isset($_GET['lang'])) setLang($_GET['lang']);
+    checkLang();
     Flight::render(
         'about.php',
         array(
@@ -16,7 +16,7 @@ Flight::route('/about', function () {
 });
 
 Flight::route('GET /contact', function () {
-    if (isset($_GET['lang'])) setLang($_GET['lang']);
+    checkLang();
     Flight::render(
         'contact.php',
         array(
@@ -36,7 +36,7 @@ Flight::route('POST /contact', function () {
 });
 
 Flight::route('/', function () {
-    if (isset($_GET['lang'])) setLang($_GET['lang']);
+    checkLang();
     $db = Flight::db();
     $query = "SELECT osm_id,cod_istat,name,safe_name FROM it_regioni reg ORDER BY safe_name";
     $res = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
@@ -50,7 +50,7 @@ Flight::route('/', function () {
 });
 
 Flight::route('/@region', function ($region) {
-    if (isset($_GET['lang'])) setLang($_GET['lang']);
+    checkLang();
     $db = Flight::db();
     $query = "SELECT reg.osm_id,reg.cod_istat,reg.name,reg.safe_name,reg.bbox,ST_AsGeoJSON(ST_Simplify(reg.geom,0.0001),5)";
     $query .=" FROM it_regioni reg WHERE reg.safe_name=".$db->quote($region);
@@ -89,7 +89,7 @@ Flight::route('/@region', function ($region) {
 
 
 Flight::route('/@region/@province', function ($region, $province) {
-    if (isset($_GET['lang'])) setLang($_GET['lang']);
+    checkLang();
     $db = Flight::db();
     $query = "SELECT com.osm_id,com.cod_istat,com.name,com.safe_name FROM it_province pro JOIN it_regioni reg ON pro.cod_istat_reg=reg.cod_istat JOIN it_comuni com ON com.cod_istat_reg=reg.cod_istat AND com.cod_istat_pro=pro.cod_istat WHERE reg.safe_name=".$db->quote($region)." AND pro.safe_name=".$db->quote($province)." ORDER BY name";
     $res = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
@@ -105,7 +105,7 @@ Flight::route('/@region/@province', function ($region, $province) {
 });
 
 Flight::route('/@region/@province/@municipality', function ($region, $province, $municipality) {
-    if (isset($_GET['lang'])) setLang($_GET['lang']);
+    checkLang();
     $db = Flight::db();
     $query = "SELECT com.osm_id,com.cod_istat,com.name, com.safe_name, pro.name AS prov_name, reg.name AS reg_name,com.bbox,ST_AsGeoJSON(ST_Simplify(com.geom,0.0001),5) FROM it_regioni reg JOIN it_province pro ON reg.cod_istat = pro.cod_istat_reg JOIN it_comuni com ON pro.cod_istat=com.cod_istat_pro WHERE com.safe_name=".$db->quote($municipality)." AND pro.safe_name=".$db->quote($province);
     $res = $db->query($query);
