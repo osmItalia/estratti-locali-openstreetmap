@@ -65,7 +65,7 @@ Flight::route('/@region', function ($region) {
     $realName=$mainData['name'];
 
     $query = "SELECT stat.* FROM it_regioni reg JOIN it_stats stat ON reg.osm_id = stat.osm_id";
-    $query .= " WHERE reg.cod_istat=".$db->quote($mainData['cod_istat'])." AND data > (CURRENT_DATE - 10) ORDER BY data ASC";
+    $query .= " WHERE reg.cod_istat=".$db->quote($mainData['cod_istat'])." AND data > (CURRENT_DATE - 30) ORDER BY data ASC";
     $res = $db->query($query);
     $stats=$res->fetchAll();
 
@@ -120,7 +120,7 @@ Flight::route('/@region/@province/@municipality', function ($region, $province, 
     $regName=$mainData['reg_name'];
     $munName=$mainData['name'];
 
-    $query = "SELECT stat.* FROM it_comuni com JOIN it_stats stat ON com.osm_id = stat.osm_id WHERE com.cod_istat=".$db->quote($mainData['cod_istat'])." AND data > (CURRENT_DATE - 10) ORDER BY data ASC";
+    $query = "SELECT stat.* FROM it_comuni com JOIN it_stats stat ON com.osm_id = stat.osm_id WHERE com.cod_istat=".$db->quote($mainData['cod_istat'])." AND data > (CURRENT_DATE - 30) ORDER BY data ASC";
     $res = $db->query($query);
     $stats=$res->fetchAll();
 
