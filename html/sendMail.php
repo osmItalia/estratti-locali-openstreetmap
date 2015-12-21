@@ -9,9 +9,10 @@ function sendMail()
         $email   = stripslashes(trim($_POST['form-email']));
         $phone   = stripslashes(trim($_POST['form-tel']));
         $subject = 'Email di contatto';
-        $message = stripslashes(trim($_POST['form-mensagem']));
+        $message = stripslashes(trim($_POST['form-message']));
         $pattern = '/[\r\n]|Content-Type:|Bcc:|Cc:/i';
         $headers = '';
+        $sendCopy= isset($_POST['form-sendCopy']);
 
         if (preg_match($pattern, $name) || preg_match($pattern, $email) || preg_match($pattern, $subject)) {
             die("Header injection detected");
@@ -21,7 +22,7 @@ function sendMail()
 
         if ($name && $email && $emailIsValid && $subject && $message) {
             $subject = "$subjectPrefix $subject";
-            $body = "Nome: $name <br /> Email: $email <br /> Telefone: $phone <br /> Mensagem: $message";
+            $body = "Name: $name <br /> Email: $email <br /> Telephone: $phone <br /> Message: $message";
 
             $headers .= sprintf('Return-Path: %s%s', $email, PHP_EOL);
             $headers .= sprintf('From: %s%s', $email, PHP_EOL);
@@ -35,6 +36,8 @@ function sendMail()
             $headers .= sprintf('Content-Type: text/html; charset="utf-8"%s', PHP_EOL);
 
             mail($emailTo, "=?utf-8?B?".base64_encode($subject)."?=", $body, $headers);
+            if ($sendCopy && $emailIsValid)
+                mail($email, "=?utf-8?B?".base64_encode($subject)."?=", $body, $headers);
             $mailResult = true;
         } else {
             $mailResult = false;

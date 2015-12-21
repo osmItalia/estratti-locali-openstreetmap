@@ -35,5 +35,6 @@
 "CONTACT_EMAIL":"Email",
 "CONTACT_PHONE":"Telefono (opzionale)",
 "CONTACT_MESSAGE":"Messaggio",
+"CONTACT_CONFIRM":"Mandami una copia della email",
 "CONTACT_SEND":"Invia"
 }

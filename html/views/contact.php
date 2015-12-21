@@ -38,9 +38,18 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="mensagem" class="col-lg-2 control-label"><?php echo __('CONTACT_MESSAGE');?></label>
+                <label for="message" class="col-lg-2 control-label"><?php echo __('CONTACT_MESSAGE');?></label>
                 <div class="col-lg-10">
-                    <textarea class="form-control" rows="3" id="form-mensagem" name="form-mensagem" placeholder="<?php echo __('CONTACT_MESSAGE');?>" required></textarea>
+                    <textarea class="form-control" rows="3" id="form-message" name="form-message" placeholder="<?php echo __('CONTACT_MESSAGE');?>" required></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-1">
+                <input class="form-control" type="checkbox" id="form-sendCopy" name="form-sendCopy"/>
+                </div>
+                <div class="col-lg-9">
+                <label for="sendCopy" class="control-label"><?php echo __('CONTACT_CONFIRM');?></label>
                 </div>
             </div>
             <div class="form-group">

@@ -12,7 +12,7 @@
 "DOWNLOAD_AND_STATISTICS":"Statistics and Downloads",
 "JUMBO_INTRO_REGION":"This is the webpage of the Region of",
 "JUMBO_INTRO_MUNICIPALITY":"This is the webpage of the Municipality of",
-"JUMBO_1":", it holds the geographic data from the database of <a href='https://www.openstreetmap.org/'>OpenStreetMap</a>. They are free to download under the <a href='http://www.openstreetmap.org/copyright'>ODbL</a> license terms, they were extracted at",
+"JUMBO_1":", it holds the geographic data from the <a href='https://www.openstreetmap.org/'>OpenStreetMap</a> database. They are free to download under the <a href='http://www.openstreetmap.org/copyright'>ODbL</a> license terms, they were extracted at",
 "JUMBO_2":"<span data-toggle='tooltip' data-placement='bottom' title='Central European Time'>CET</span> of",
 "JUMBO_3_REGION":"and are updated daily. This means that an edit made now will be visible in tomorrow extracts. <a href='https://www.openstreetmap.org/'>Join us</a> and improve the map of your Region!",
 "JUMBO_3_MUNICIPALITY":"and are updated daily. This means that an edit made now will be visible in tomorrow extracts. <a href='https://www.openstreetmap.org/'>Join us</a> and improve the map of your municipality!",
@@ -35,5 +35,6 @@
 "CONTACT_EMAIL":"Email",
 "CONTACT_PHONE":"Phone number (optional)",
 "CONTACT_MESSAGE":"Message",
+"CONTACT_CONFIRM":"Send me a copy of the email",
 "CONTACT_SEND":"Send"
 }
