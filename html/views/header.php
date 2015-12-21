@@ -35,8 +35,8 @@
 
       <ul class="nav navbar-nav navbar-right">
 
-      <li<?php echo ($_SERVER['REQUEST_URI'] == $baseUrl . '/about/') ? 'class="active"':'' ?>><a href="<?php echo $baseUrl?>/about/"><?php echo __('ABOUT'); ?></a></li>
-      <li<?php echo ($_SERVER['REQUEST_URI'] == $baseUrl . '/contact/') ? 'class="active"':'' ?>><a href="<?php echo $baseUrl?>/contact/"><?php echo __('CONTACTS'); ?></a></li>
+      <li<?php echo ($_SERVER['REQUEST_URI'] == $baseUrl . '/about/') ? ' class="active"':'' ?>><a href="<?php echo $baseUrl?>/about/"><?php echo __('ABOUT'); ?></a></li>
+      <li<?php echo ($_SERVER['REQUEST_URI'] == $baseUrl . '/contact/') ? ' class="active"':'' ?>><a href="<?php echo $baseUrl?>/contact/"><?php echo __('CONTACTS'); ?></a></li>
           <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon glyphicon-flag"> </span> <?php echo __('LANGUAGE');?> <span class="caret"></span></a>
           <ul class="dropdown-menu">
