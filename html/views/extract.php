@@ -56,6 +56,9 @@ $dt=filemtime("/srv/downloads/italy-latest.osm.pbf");
                 var geojsonLayer= L.geoJson(geojsonFeature).addTo(map);
                 map.fitBounds(geojsonLayer.getBounds(),{padding:[15,15]});
                 <?php endif; ?>
+                <?php if (isset($mainData['bbox'])) :?>
+                var rectangle = L.rectangle(<?php echo $mainData['bbox'];?>, {color: "#ff7800", weight: 1}).addTo(map);
+                <?php endif; ?>
                 </script>
                 </div>
             </div>

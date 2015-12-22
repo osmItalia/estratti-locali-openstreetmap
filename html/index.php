@@ -60,6 +60,9 @@ Flight::route('/@region', function ($region) {
         return Flight::notFound();
     }
     $mainData=$mainData[0];
+    $arrBbox=explode(',',$mainData['bbox']);
+    $arrBbox=array_map('floatval',$arrBbox);
+    $mainData['bbox']=json_encode([[min($arrBbox[1],$arrBbox[3]),min($arrBbox[0],$arrBbox[2])],[max($arrBbox[1],$arrBbox[3]),max($arrBbox[0],$arrBbox[2])]]);
 
 //name with diacritics for display
     $realName=$mainData['name'];
@@ -115,6 +118,9 @@ Flight::route('/@region/@province/@municipality', function ($region, $province, 
         return Flight::notFound();
     }
     $mainData=$mainData[0];
+    $arrBbox=explode(',',$mainData['bbox']);
+    $arrBbox=array_map('floatval',$arrBbox);
+    $mainData['bbox']=json_encode([[min($arrBbox[1],$arrBbox[3]),min($arrBbox[0],$arrBbox[2])],[max($arrBbox[1],$arrBbox[3]),max($arrBbox[0],$arrBbox[2])]]);
 
     $proName=$mainData['prov_name'];
     $regName=$mainData['reg_name'];
