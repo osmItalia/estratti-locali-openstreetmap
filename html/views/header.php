@@ -39,9 +39,12 @@
       <li<?php echo ($_SERVER['REQUEST_URI'] == $baseUrl . '/contact/') ? ' class="active"':'' ?>><a href="<?php echo $baseUrl?>/contact/"><?php echo __('CONTACTS'); ?></a></li>
           <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon glyphicon-flag"> </span> <?php echo __('LANGUAGE');?> <span class="caret"></span></a>
+          <?php $baseLang = Flight::request()->base;
+                $baseLang .= explode("?", Flight::request()->url)[0]; 
+          ?>
           <ul class="dropdown-menu">
-            <li><a href="<?php echo Flight::request()->base.Flight::request()->url.'?lang=it'?>">Italiano</a></li>
-            <li><a href="<?php echo Flight::request()->base.Flight::request()->url.'?lang=en'?>">English</a></li>
+            <li><a href="<?php echo $baseLang.'?lang=it'?>">Italiano</a></li>
+            <li><a href="<?php echo $baseLang.'?lang=en'?>">English</a></li>
           </ul>
         </li>
       </ul>

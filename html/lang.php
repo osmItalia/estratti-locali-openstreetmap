@@ -19,7 +19,7 @@ function __($string) {
 }
 
 function setLang($lang) {
-    setcookie("extractLang", $lang, time()+31536000);
+    setcookie("extractLang", $lang, time()+31536000,'/');
     Flight::set('lang',$lang);
 }
 
