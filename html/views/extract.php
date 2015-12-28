@@ -110,32 +110,51 @@ $dt=filemtime("/srv/downloads/italy-latest.osm.pbf");
         </div>
 
         <div class="col-md-6">
-<a href="<?php echo $baseUrl.'/comuni/shape/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.zip';?>">
+<?php
+$filePath='/comuni/shape/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.zip';
+if(file_exists($_SERVER['DOCUMENT_ROOT'].'/estratti'.$filePath)): ?>
+<a href="<?php echo $baseUrl.$filePath;?>">
 <button type="button" class="btn btn-default btn-lg">
-  <span class="glyphicon glyphicon-download-alt"></span> SHP (<?php echo number_format(filesize($_SERVER['DOCUMENT_ROOT'].'/estratti/comuni/shape/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.zip') / 1048576, 2);?> MB)
+  <span class="glyphicon glyphicon-download-alt"></span> SHP (<?php echo number_format(filesize($_SERVER['DOCUMENT_ROOT'].'/estratti'.$filePath) / 1048576, 2);?> MB)
 </button>
 </a>
-<a href="<?php echo $baseUrl.'/comuni/pbf/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.pbf';?>">
-<button type="button" class="btn btn-default btn-lg">
-  <span class="glyphicon glyphicon-download-alt"></span> PBF (<?php echo number_format(filesize($_SERVER['DOCUMENT_ROOT'].'/estratti/comuni/pbf/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.pbf') / 1048576, 2);?> MB)
-</button>
-</a>
-<a href="<?php echo $baseUrl.'/comuni/osm/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.osm.zip';?>">
-<button type="button" class="btn btn-default btn-lg">
-  <span class="glyphicon glyphicon-download-alt"></span> OSM (<?php echo number_format(filesize($_SERVER['DOCUMENT_ROOT'].'/estratti/comuni/osm/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.osm.zip') / 1048576, 2);?> MB)
-</button>
-</a>
-<a href="<?php echo $baseUrl.'/comuni/sqlite/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.sqlite.zip';?>">
-<button type="button" class="btn btn-default btn-lg">
-  <span class="glyphicon glyphicon-download-alt"></span> Spatialite (<?php echo number_format(filesize($_SERVER['DOCUMENT_ROOT'].'/estratti/comuni/sqlite/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.sqlite.zip') / 1048576, 2);?> MB)
-</button>
-</a>
-<a href="<?php echo $baseUrl.'/comuni/poly/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.poly';?>">
-<button type="button" class="btn btn-default btn-lg">
-  <span class="glyphicon glyphicon-download-alt"></span> POLY(<?php echo number_format(filesize($_SERVER['DOCUMENT_ROOT'].'/estratti/comuni/poly/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.poly') / 1048576, 2);?> MB)
+<?php endif;
 
+$filePath='/comuni/pbf/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.pbf';
+if(file_exists($_SERVER['DOCUMENT_ROOT'].'/estratti'.$filePath)): ?>
+<a href="<?php echo $baseUrl.$filePath;?>">
+<button type="button" class="btn btn-default btn-lg">
+  <span class="glyphicon glyphicon-download-alt"></span> PBF (<?php echo number_format(filesize($_SERVER['DOCUMENT_ROOT'].'/estratti'.$filePath) / 1048576, 2);?> MB)
 </button>
 </a>
+<?php endif;
+
+$filePath='/comuni/osm/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.osm.zip';
+if(file_exists($_SERVER['DOCUMENT_ROOT'].'/estratti'.$filePath)): ?>
+<a href="<?php echo $baseUrl.$filePath;?>">
+<button type="button" class="btn btn-default btn-lg">
+  <span class="glyphicon glyphicon-download-alt"></span> OSM (<?php echo number_format(filesize($_SERVER['DOCUMENT_ROOT'].'/estratti'.$filePath) / 1048576, 2);?> MB)
+</button>
+</a>
+<?php endif;
+
+$filePath='/comuni/sqlite/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.sqlite.zip';
+if(file_exists($_SERVER['DOCUMENT_ROOT'].'/estratti'.$filePath)): ?>
+<a href="<?php echo $baseUrl.$filePath;?>">
+<button type="button" class="btn btn-default btn-lg">
+  <span class="glyphicon glyphicon-download-alt"></span> Spatialite (<?php echo number_format(filesize($_SERVER['DOCUMENT_ROOT'].'/estratti'.$filePath) / 1048576, 2);?> MB)
+</button>
+</a>
+<?php endif;
+
+$filePath='/comuni/poly/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.poly';
+if(file_exists($_SERVER['DOCUMENT_ROOT'].'/estratti'.$filePath)): ?>
+<a href="<?php echo $baseUrl.$filePath;?>">
+<button type="button" class="btn btn-default btn-lg">
+  <span class="glyphicon glyphicon-download-alt"></span> POLY (<?php echo number_format(filesize($_SERVER['DOCUMENT_ROOT'].'/estratti'.$filePath) / 1048576, 2);?> MB)
+</button>
+</a>
+<?php endif; ?>
         </div>
     </div>
 </div>

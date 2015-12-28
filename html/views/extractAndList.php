@@ -131,31 +131,51 @@ $dt=filemtime("/srv/downloads/italy-latest.osm.pbf");
             </table>
         </div>
         <div class="col-md-6">
-<a href="<?php echo $baseUrl.'/regioni/shape/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.zip';?>">
+<?php
+$filePath='/regioni/shape/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.zip';
+if(file_exists($_SERVER['DOCUMENT_ROOT'].'/estratti'.$filePath)): ?>
+<a href="<?php echo $baseUrl.$filePath;?>">
 <button type="button" class="btn btn-default btn-lg">
-  <span class="glyphicon glyphicon-download-alt"></span> SHP (<?php echo number_format(filesize($_SERVER['DOCUMENT_ROOT'].'/estratti/regioni/shape/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.zip') / 1048576, 2);?> MB)
+  <span class="glyphicon glyphicon-download-alt"></span> SHP (<?php echo number_format(filesize($_SERVER['DOCUMENT_ROOT'].'/estratti'.$filePath) / 1048576, 2);?> MB)
 </button>
 </a>
-<a href="<?php echo $baseUrl.'/regioni/pbf/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.pbf';?>">
+<?php endif;
+
+$filePath='/regioni/pbf/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.pbf';
+if(file_exists($_SERVER['DOCUMENT_ROOT'].'/estratti'.$filePath)): ?>
+<a href="<?php echo $baseUrl.$filePath;?>">
 <button type="button" class="btn btn-default btn-lg">
-  <span class="glyphicon glyphicon-download-alt"></span> PBF (<?php echo number_format(filesize($_SERVER['DOCUMENT_ROOT'].'/estratti/regioni/pbf/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.pbf') / 1048576, 2);?> MB)
+  <span class="glyphicon glyphicon-download-alt"></span> PBF (<?php echo number_format(filesize($_SERVER['DOCUMENT_ROOT'].'/estratti'.$filePath) / 1048576, 2);?> MB)
 </button>
 </a>
-<a href="<?php echo $baseUrl.'/regioni/osm/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.osm.zip';?>">
+<?php endif;
+
+$filePath='/regioni/osm/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.osm.zip';
+if(file_exists($_SERVER['DOCUMENT_ROOT'].'/estratti'.$filePath)): ?>
+<a href="<?php echo $baseUrl.$filePath;?>">
 <button type="button" class="btn btn-default btn-lg">
-  <span class="glyphicon glyphicon-download-alt"></span> OSM (<?php echo number_format(filesize($_SERVER['DOCUMENT_ROOT'].'/estratti/regioni/osm/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.osm.zip') / 1048576, 2);?> MB)
+  <span class="glyphicon glyphicon-download-alt"></span> OSM (<?php echo number_format(filesize($_SERVER['DOCUMENT_ROOT'].'/estratti'.$filePath) / 1048576, 2);?> MB)
 </button>
 </a>
-<a href="<?php echo $baseUrl.'/regioni/sqlite/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.sqlite.zip';?>">
+<?php endif;
+
+$filePath='/regioni/sqlite/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.sqlite.zip';
+if(file_exists($_SERVER['DOCUMENT_ROOT'].'/estratti'.$filePath)): ?>
+<a href="<?php echo $baseUrl.$filePath;?>">
 <button type="button" class="btn btn-default btn-lg">
-  <span class="glyphicon glyphicon-download-alt"></span> Spatialite (<?php echo number_format(filesize($_SERVER['DOCUMENT_ROOT'].'/estratti/regioni/sqlite/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.sqlite.zip') / 1048576, 2);?> MB)
+  <span class="glyphicon glyphicon-download-alt"></span> Spatialite (<?php echo number_format(filesize($_SERVER['DOCUMENT_ROOT'].'/estratti'.$filePath) / 1048576, 2);?> MB)
 </button>
 </a>
-<a href="<?php echo $baseUrl.'/regioni/poly/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.poly';?>">
+<?php endif;
+
+$filePath='/regioni/poly/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.poly';
+if(file_exists($_SERVER['DOCUMENT_ROOT'].'/estratti'.$filePath)): ?>
+<a href="<?php echo $baseUrl.$filePath;?>">
 <button type="button" class="btn btn-default btn-lg">
-  <span class="glyphicon glyphicon-download-alt"></span> POLY(<?php echo number_format(filesize($_SERVER['DOCUMENT_ROOT'].'/estratti/regioni/poly/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.poly') / 1048576, 2);?> MB)
+  <span class="glyphicon glyphicon-download-alt"></span> POLY (<?php echo number_format(filesize($_SERVER['DOCUMENT_ROOT'].'/estratti'.$filePath) / 1048576, 2);?> MB)
 </button>
 </a>
+<?php endif; ?>
         </div>
     </div>
 </div>
