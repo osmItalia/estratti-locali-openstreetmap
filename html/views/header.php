@@ -45,6 +45,7 @@
           <ul class="dropdown-menu">
             <li><a href="<?php echo $baseLang.'?lang=it'?>">Italiano</a></li>
             <li><a href="<?php echo $baseLang.'?lang=en'?>">English</a></li>
+            <li><a href="<?php echo $baseLang.'?lang=de'?>">Deutsch</a></li>
           </ul>
         </li>
       </ul>
