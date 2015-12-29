@@ -129,6 +129,7 @@ $dt=filemtime("/srv/downloads/italy-latest.osm.pbf");
 
                 </tbody>
             </table>
+            <a href="<?php echo Flight::request()->base.Flight::request()->url.'/stats' ?>"><?php echo __('HISTORICAL_DATA'); ?></a>
         </div>
         <div class="col-md-6">
 <?php

@@ -90,6 +90,35 @@ Flight::route('/@region', function ($region) {
     );
 });
 
+Flight::route('/@region/stats', function ($region) {
+    checkLang();
+    $db = Flight::db();
+    $query = "SELECT reg.osm_id,reg.cod_istat,reg.name,reg.safe_name";
+    $query .=" FROM it_regioni reg WHERE reg.safe_name=".$db->quote($region);
+    $res = $db->query($query);
+    $mainData=$res->fetchAll();
+    if (count($mainData)==0) {
+        return Flight::notFound();
+    }
+    $mainData=$mainData[0];
+    $realName=$mainData['name'];
+
+    $query = "SELECT stat.* FROM it_regioni reg JOIN it_stats stat ON reg.osm_id = stat.osm_id";
+    $query .= " WHERE reg.cod_istat=".$db->quote($mainData['cod_istat'])." ORDER BY data ASC";
+    $res = $db->query($query);
+    $stats=$res->fetchAll();
+
+    Flight::render(
+        'extractStats.php',
+        array(
+            'baseUrl'=>Flight::request()->base,
+            'pTitle' => $realName,
+            'region_safe' => $region,
+            'region' => $realName,
+            'mainData' => $mainData,
+            'stats' => $stats)
+    );
+});
 
 Flight::route('/@region/@province', function ($region, $province) {
     checkLang();
@@ -132,6 +161,40 @@ Flight::route('/@region/@province/@municipality', function ($region, $province, 
 
     Flight::render(
         'extract.php',
+        array(
+            'baseUrl'=>Flight::request()->base,
+            'pTitle' => $municipality.', '.$province.', '.$region,
+            'region' => $regName,
+            'region_safe' => $region,
+            'province' => $proName,
+            'province_safe'=> $province,
+            'municipality' => $munName,
+            'municipality_safe'=> $municipality,
+            'mainData' => $mainData,
+            'stats' => $stats)
+    );
+});
+
+Flight::route('/@region/@province/@municipality/stats', function ($region, $province, $municipality) {
+    checkLang();
+    $db = Flight::db();
+    $query = "SELECT com.osm_id,com.cod_istat,com.name, com.safe_name, pro.name AS prov_name, reg.name AS reg_nameFROM it_regioni reg JOIN it_province pro ON reg.cod_istat = pro.cod_istat_reg JOIN it_comuni com ON pro.cod_istat=com.cod_istat_pro WHERE com.safe_name=".$db->quote($municipality)." AND pro.safe_name=".$db->quote($province);
+    $res = $db->query($query);
+    $mainData=$res->fetchAll();
+    if (count($mainData)==0) {
+        return Flight::notFound();
+    }
+    $mainData=$mainData[0];
+    $proName=$mainData['prov_name'];
+    $regName=$mainData['reg_name'];
+    $munName=$mainData['name'];
+
+    $query = "SELECT stat.* FROM it_comuni com JOIN it_stats stat ON com.osm_id = stat.osm_id WHERE com.cod_istat=".$db->quote($mainData['cod_istat'])." ORDER BY data ASC";
+    $res = $db->query($query);
+    $stats=$res->fetchAll();
+
+    Flight::render(
+        'extractStats.php',
         array(
             'baseUrl'=>Flight::request()->base,
             'pTitle' => $municipality.', '.$province.', '.$region,
