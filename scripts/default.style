@@ -88,7 +88,7 @@ node,way   admin_level  text         linear
 node,way   ref:ISTAT    text         linear
 #node,way   amenity      text         polygon
 node,way   boundary     text         polygon
-node,way   building     text         polygon
+#node,way   building     text         polygon
 #node       capital      text         linear
 #node,way   denomination text         linear
 #node       ele          text         linear

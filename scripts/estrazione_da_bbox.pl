@@ -73,7 +73,7 @@ while (my $row = <$fh>) {
          $null = `$command `;
 
         print "converto $nome da pbf in osm\n";
-        $command = "/usr/local/bin/osmconvert  -t=/srv/tmp/osmconvert_tempfile $dirName/pbf/$rel---$nome.pbf > $dirName/osm/$rel---$nome.osm ";
+        $command = "cd  $dirName/osm ; mkdir $nome ; cd $nome ; /usr/local/bin/osmconvert  -t=/srv/tmp/osmconvert_tempfile $dirName/pbf/$rel---$nome.pbf > $rel---$nome.osm ";
         system($command);
 
 
@@ -81,7 +81,7 @@ while (my $row = <$fh>) {
         print "estraggo nomi utenti da file $nome \n";
 
         #$command = "grep user  $dirName/osm/$rel---$nome.osm |  perl -nle 'print \$1 if /user=\"(.*?)\"/' | sort | uniq | tr '\n' ',' ";
-	$command = "grep user  $dirName/osm/$rel---$nome.osm |  perl -nle 'print \$1 if /user=\"(.*?)\"/' | sort | uniq | sed  ':a;N;\$!ba;s|\\n|, |g' | fold -s -w 80 ";
+	$command = "grep user  $dirName/osm/$nome/$rel---$nome.osm |  perl -nle 'print \$1 if /user=\"(.*?)\"/' | sort | uniq | sed  ':a;N;\$!ba;s|\\n|, |g' | fold -s -w 80 ";
 
         my $utenti= `$command `;
 
@@ -98,29 +98,29 @@ while (my $row = <$fh>) {
 
         #copio i README
 
-        $command = " perl -p -e 's/{{{USERS_LIST}}}/$utenti/g ;' -e 's/{{{DATE}}}/ $date_now/g ;' -e 's/{{{BASE_URL}}}{{{FILE_NAME}}}/ $base_url $filename/g'  $BASEDIR_SH/text/README.template.generic.txt >  $dirName/osm/README-$nome.txt";
+        $command = " perl -p -e 's/{{{USERS_LIST}}}/$utenti/g ;' -e 's/{{{DATE}}}/ $date_now/g ;' -e 's/{{{BASE_URL}}}{{{FILE_NAME}}}/ $base_url $filename/g'  $BASEDIR_SH/text/README.template.generic.txt >  $dirName/osm/$nome/README-$nome.txt";
         system($command);
-        $command = " perl -p -e 's/{{{USERS_LIST}}}/$utenti/g ;' -e 's/{{{DATE}}}/ $date_now/g ;' -e 's/{{{BASE_URL}}}{{{FILE_NAME}}}/ $base_url $filename/g'  $BASEDIR_SH/text/LEGGIMI.template.generic.txt >  $dirName/osm/LEGGIMI-$nome.txt";
+        $command = " perl -p -e 's/{{{USERS_LIST}}}/$utenti/g ;' -e 's/{{{DATE}}}/ $date_now/g ;' -e 's/{{{BASE_URL}}}{{{FILE_NAME}}}/ $base_url $filename/g'  $BASEDIR_SH/text/LEGGIMI.template.generic.txt >  $dirName/osm/$nome/LEGGIMI-$nome.txt";
         system($command);
 
 	#genero gli shapefile
         print "ricavo lo shape $nome\n";
-        $command = "cd $dirName/shape ; mkdir $nome ; cd $nome ; cp $dirName/osm/README-$nome.txt . ; cp  $dirName/osm/LEGGIMI-$nome.txt . ; /var/opt/osmium/osmjs/osmjs -l array -j /var/opt/osmium/osmjs/js/config.js -i /var/opt/osmium/osmjs/js/osm2shape.js $dirName/pbf/$rel---$nome.pbf 1>/dev/null && zip -m $rel---$nome.zip * 1>/dev/null ; mv *.zip .. ; cd .. ; rm -rf $nome  & ";
+        $command = "cd $dirName/shape ; mkdir $nome ; cd $nome ; cp $dirName/osm/$nome/README-$nome.txt . ; cp  $dirName/osm/$nome/LEGGIMI-$nome.txt . ; /var/opt/osmium/osmjs/osmjs -2 -m -l array -i /var/opt/osmium/osmjs/js/osm2shape.js  -j /var/opt/osmium/osmjs/js/config.js $dirName/pbf/$rel---$nome.pbf 1>/dev/null && zip -m $rel---$nome.zip * 1>/dev/null ; mv *.zip .. ; cd .. ; rm -rf $nome  & ";
         system($command);
 
         #genero lo spatialite
         print "ricavo lo spatialite $nome\n";
-        $command = "cp $dirName/osm/README-$nome.txt  $dirName/sqlite ; cp  $dirName/osm/LEGGIMI-$nome.txt  $dirName/sqlite ; rm -f $dirName/sqlite/$nome---$rel.sqlite ; ogr2ogr -f SQLite -dsco spatialite=yes  $dirName/sqlite/$rel---$nome.sqlite $dirName/osm/$rel---$nome.osm  -gt 20000  --config OGR_SQLITE_SYNCHRONOUS OFF ";
+        #$command = "cp $dirName/osm/README-$nome.txt  $dirName/sqlite ; cp  $dirName/osm/LEGGIMI-$nome.txt  $dirName/sqlite ; rm -f $dirName/sqlite/$nome---$rel.sqlite ; ogr2ogr -f SQLite -dsco spatialite=yes  $dirName/sqlite/$rel---$nome.sqlite $dirName/osm/$rel---$nome.osm  -gt 20000  --config OGR_SQLITE_SYNCHRONOUS OFF ";
+        $command = "cd $dirName/sqlite ; mkdir $nome ; cd $nome ; cp $dirName/osm/$nome/README-$nome.txt . ; cp  $dirName/osm/$nome/LEGGIMI-$nome.txt . ; ogr2ogr -f SQLite -dsco spatialite=yes  $rel---$nome.sqlite $dirName/osm/$nome/$rel---$nome.osm  -gt 20000  --config OGR_SQLITE_SYNCHRONOUS OFF ";
         system($command);
 
         #zippo file osm e spatialite
-        $command = "rm -f $dirName/osm/$rel---$nome.osm.zip; rm -f $dirName/sqlite/$rel---$nome.sqlite.zip";
-        system($command);
 
         print "zippo $nome\n";
-        $command = "zip -q -j -m $dirName/osm/$rel---$nome.osm.zip $dirName/osm/$rel---$nome.osm $dirName/osm/README-$nome.txt $dirName/osm/LEGGIMI-$nome.txt 1>/dev/null ; chmod 644  $dirName/osm/$rel---$nome.osm.zip  &";
+        $command = "zip -q -j -m $dirName/osm/$nome/$rel---$nome.osm.zip $dirName/osm/$nome/$rel---$nome.osm $dirName/osm/$nome/README-$nome.txt $dirName/osm/$nome/LEGGIMI-$nome.txt 1>/dev/null ; chmod 644  $dirName/osm/$nome/$rel---$nome.osm.zip ; mv $dirName/osm/$nome/$rel---$nome.osm.zip $dirName/osm ; rm -rf  $dirName/osm/$nome &";
         system($command);
-        $command = "zip -q -j -m $dirName/sqlite/$rel---$nome.sqlite.zip $dirName/sqlite/$rel---$nome.sqlite $dirName/sqlite/README-$nome.txt $dirName/sqlite/LEGGIMI-$nome.txt 1>/dev/null ; chmod 644  $dirName/sqlite/$rel---$nome.sqlite.zip  &";
+
+        $command = "zip -q -j -m $dirName/sqlite/$nome/$rel---$nome.sqlite.zip $dirName/sqlite/$nome/$rel---$nome.sqlite $dirName/sqlite/$nome/README-$nome.txt $dirName/sqlite/$nome/LEGGIMI-$nome.txt 1>/dev/null ; chmod 644  $dirName/sqlite/$nome/$rel---$nome.sqlite.zip ; mv $dirName/sqlite/$nome/$rel---$nome.sqlite.zip $dirName/sqlite ; rm -rf $dirName/sqlite/$nome &";
         system($command);
 
 
