@@ -178,7 +178,7 @@ Flight::route('/@region/@province/@municipality', function ($region, $province, 
 Flight::route('/@region/@province/@municipality/stats', function ($region, $province, $municipality) {
     checkLang();
     $db = Flight::db();
-    $query = "SELECT com.osm_id,com.cod_istat,com.name, com.safe_name, pro.name AS prov_name, reg.name AS reg_nameFROM it_regioni reg JOIN it_province pro ON reg.cod_istat = pro.cod_istat_reg JOIN it_comuni com ON pro.cod_istat=com.cod_istat_pro WHERE com.safe_name=".$db->quote($municipality)." AND pro.safe_name=".$db->quote($province);
+    $query = "SELECT com.osm_id,com.cod_istat,com.name, com.safe_name, pro.name AS prov_name, reg.name AS reg_name FROM it_regioni reg JOIN it_province pro ON reg.cod_istat = pro.cod_istat_reg JOIN it_comuni com ON pro.cod_istat=com.cod_istat_pro WHERE com.safe_name=".$db->quote($municipality)." AND pro.safe_name=".$db->quote($province);
     $res = $db->query($query);
     $mainData=$res->fetchAll();
     if (count($mainData)==0) {
