@@ -38,7 +38,7 @@
     <script src="<?php echo $baseUrl?>/assets/js/custom.js"></script>
 
 <?php
-if ($_COOKIE['cookiebar'] == "CookieAllowed"):
+if (isset($_COOKIE['cookiebar']) && $_COOKIE['cookiebar'] == "CookieAllowed"):
 ?>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
