@@ -10,6 +10,9 @@
     <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
     <link rel="shortcut icon" href="<?php echo $baseUrl; ?>/assets/favicon.ico" type="image/x-icon">
     <link rel="icon" href="<?php echo $baseUrl; ?>/assets/favicon.ico" type="image/x-icon">
+
+    <script type="text/javascript" src="//cdn.jsdelivr.net/cookie-bar/1/cookiebar-latest.min.js?tracking=1&thirdparty=1&always=1&blocking=1"></script>
+
   </head>
   <body>
 
