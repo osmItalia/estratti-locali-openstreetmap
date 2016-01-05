@@ -11,7 +11,7 @@
     <link rel="shortcut icon" href="<?php echo $baseUrl; ?>/assets/favicon.ico" type="image/x-icon">
     <link rel="icon" href="<?php echo $baseUrl; ?>/assets/favicon.ico" type="image/x-icon">
 
-    <script type="text/javascript" src="//cdn.jsdelivr.net/cookie-bar/1/cookiebar-latest.min.js?tracking=1&thirdparty=1&always=1&blocking=1"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/cookie-bar/1/cookiebar-latest.min.js?tracking=1&thirdparty=1&always=1"></script>
 
   </head>
   <body>
