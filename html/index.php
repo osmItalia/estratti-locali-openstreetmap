@@ -49,13 +49,131 @@ Flight::route('/', function () {
     );
 });
 
+Flight::route('/api', function () {
+    $db = Flight::db();
+    $query = "SELECT osm_id,cod_istat,name,safe_name FROM it_regioni reg ORDER BY safe_name";
+    $res = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+    //href = baseurl + rawurlencode($row['safe_name']), text = $row['name']
+    Flight::json(['list' => $res]);
+});
+
+Flight::route('/api/@region', function ($region) {
+    $jsonResponse = [];
+    $db = Flight::db();
+
+    $query = "SELECT reg.osm_id,reg.cod_istat,reg.name,reg.safe_name,reg.bbox,ST_AsGeoJSON(ST_Simplify(reg.geom,0.0001),5)";
+    $query .=" FROM it_regioni reg WHERE reg.safe_name=".$db->quote($region);
+    $res = $db->query($query);
+    $mainData=$res->fetchAll();
+    if (count($mainData)==0) {
+        return Flight::notFound();
+    }
+    $mainData=$mainData[0];
+
+    $arrBbox=explode(',',$mainData['bbox']);
+    $arrBbox=array_map('floatval',$arrBbox);
+    $mainData['bbox']=json_encode([[min($arrBbox[1],$arrBbox[3]),min($arrBbox[0],$arrBbox[2])],[max($arrBbox[1],$arrBbox[3]),max($arrBbox[0],$arrBbox[2])]]);
+ 
+    $jsonResponse['mainData'] = $mainData;
+
+    $query = "SELECT pro.osm_id,pro.cod_istat,pro.name,pro.safe_name FROM it_province pro JOIN it_regioni reg";
+    $query .= " ON pro.cod_istat_reg=reg.cod_istat WHERE reg.cod_istat=".$db->quote($mainData['cod_istat'])." ORDER BY pro.safe_name";
+    $res = $db->query($query);
+    $res=$res->fetchAll(PDO::FETCH_ASSOC);
+
+    $jsonResponse['list'] = $res;
+
+    /*
+     * href = baseurl + rawurlencode($row['safe_name']), text = $row['name']
+     * filepath = '/regioni/{format}/' + $mainData['cod_istat'] + '---' + $mainData['safe_name'] + '.{extension}'
+     * shape => zip
+     * pbf => pbf
+     * osm => osm.zip
+     * sqlite => sqlite.zip
+     * poly => poly
+     */
+
+    Flight::json($jsonResponse);
+});
+
+Flight::route('/api/@region/stats/@days:[0-9]+', function ($region, $days) {
+    $jsonResponse = [];
+    $db = Flight::db();
+
+    $query = "SELECT stat.* FROM it_regioni reg JOIN it_stats stat ON reg.osm_id = stat.osm_id";
+    $query .= " WHERE reg.safe_name=".$db->quote($region);
+    if ($days > 0) {
+        $query .= " AND data > (CURRENT_DATE - 30)";
+    }
+    $query .= " ORDER BY data ASC";
+    $res = $db->query($query);
+    $stats=$res->fetchAll(PDO::FETCH_ASSOC);
+    $jsonResponse['stats'] = $stats;
+
+    Flight::json($jsonResponse);
+});
+
+Flight::route('/api/@region/@province', function ($region, $province) {
+    $db = Flight::db();
+    $query = "SELECT com.osm_id,com.cod_istat,com.name,com.safe_name FROM it_province pro JOIN it_regioni reg ON pro.cod_istat_reg=reg.cod_istat JOIN it_comuni com ON com.cod_istat_reg=reg.cod_istat AND com.cod_istat_pro=pro.cod_istat WHERE reg.safe_name=".$db->quote($region)." AND pro.safe_name=".$db->quote($province)." ORDER BY name";
+    $res = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+    //href = baseurl + region + rawurlencode($row['safe_name']), text = $row['name']
+    Flight::json(['list' => $res]);
+});
+
+Flight::route('/api/@region/@province/@municipality', function ($region, $province, $municipality) {
+    $jsonResponse = [];
+    $db = Flight::db();
+ 
+    $query = "SELECT com.osm_id,com.cod_istat,com.name, com.safe_name, pro.name AS prov_name, reg.name AS reg_name,com.bbox,ST_AsGeoJSON(ST_Simplify(com.geom,0.0001),5) FROM it_regioni reg JOIN it_province pro ON reg.cod_istat = pro.cod_istat_reg JOIN it_comuni com ON pro.cod_istat=com.cod_istat_pro WHERE com.safe_name=".$db->quote($municipality)." AND pro.safe_name=".$db->quote($province);
+    $res = $db->query($query);
+    $mainData=$res->fetchAll(PDO::FETCH_ASSOC);
+    if (count($mainData)==0) {
+        return Flight::notFound();
+    }
+    $mainData=$mainData[0];
+
+    $arrBbox=explode(',',$mainData['bbox']);
+    $arrBbox=array_map('floatval',$arrBbox);
+    $mainData['bbox']=json_encode([[min($arrBbox[1],$arrBbox[3]),min($arrBbox[0],$arrBbox[2])],[max($arrBbox[1],$arrBbox[3]),max($arrBbox[0],$arrBbox[2])]]);
+ 
+    $jsonResponse['mainData'] = $mainData;
+
+    /*
+     * filepath = '/comuni/{format}/' + $mainData['cod_istat'] + '---' + $mainData['safe_name'] + '.{extension}'
+     * shape => zip
+     * pbf => pbf
+     * osm => osm.zip
+     * sqlite => sqlite.zip
+     * poly => polyf
+     */
+
+    Flight::json($jsonResponse);
+});
+
+Flight::route('/api/@region/@province/@municipality/stats/@days', function ($region, $province, $municipality, $days) {
+    $jsonResponse = [];
+    $db = Flight::db();
+
+    $query = "SELECT stat.* FROM it_comuni com JOIN it_regioni reg ON com.cod_istat_reg = reg.cod_istat JOIN it_stats stat ON com.osm_id = stat.osm_id WHERE com.safe_name=".$db->quote($municipality)." AND reg.safe_name=".$db->quote($region);
+    if ($days > 0) {
+        $query .= " AND data > (CURRENT_DATE - 30)";
+    }
+    $query .= " ORDER BY data ASC";
+    $res = $db->query($query);
+    $stats=$res->fetchAll(PDO::FETCH_ASSOC);
+    $jsonResponse['stats'] = $stats;
+
+    Flight::json($jsonResponse);
+});
+
 Flight::route('/@region', function ($region) {
     checkLang();
     $db = Flight::db();
     $query = "SELECT reg.osm_id,reg.cod_istat,reg.name,reg.safe_name,reg.bbox,ST_AsGeoJSON(ST_Simplify(reg.geom,0.0001),5)";
     $query .=" FROM it_regioni reg WHERE reg.safe_name=".$db->quote($region);
     $res = $db->query($query);
-    $mainData=$res->fetchAll();
+    $mainData=$res->fetchAll(PDO::FETCH_ASSOC);
     if (count($mainData)==0) {
         return Flight::notFound();
     }
@@ -106,7 +224,7 @@ Flight::route('/@region/stats', function ($region) {
     $query = "SELECT stat.* FROM it_regioni reg JOIN it_stats stat ON reg.osm_id = stat.osm_id";
     $query .= " WHERE reg.cod_istat=".$db->quote($mainData['cod_istat'])." ORDER BY data ASC";
     $res = $db->query($query);
-    $stats=$res->fetchAll();
+    $stats=$res->fetchAll(PDO::FETCH_ASSOC);
 
     Flight::render(
         'extractStats.php',
@@ -180,7 +298,7 @@ Flight::route('/@region/@province/@municipality/stats', function ($region, $prov
     $db = Flight::db();
     $query = "SELECT com.osm_id,com.cod_istat,com.name, com.safe_name, pro.name AS prov_name, reg.name AS reg_name FROM it_regioni reg JOIN it_province pro ON reg.cod_istat = pro.cod_istat_reg JOIN it_comuni com ON pro.cod_istat=com.cod_istat_pro WHERE com.safe_name=".$db->quote($municipality)." AND pro.safe_name=".$db->quote($province);
     $res = $db->query($query);
-    $mainData=$res->fetchAll();
+    $mainData=$res->fetchAll(PDO::FETCH_ASSOC);
     if (count($mainData)==0) {
         return Flight::notFound();
     }
