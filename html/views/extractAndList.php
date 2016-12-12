@@ -176,6 +176,24 @@ if(file_exists($_SERVER['DOCUMENT_ROOT'].'/estratti'.$filePath)): ?>
   <span class="glyphicon glyphicon-download-alt"></span> POLY (<?php echo number_format(filesize($_SERVER['DOCUMENT_ROOT'].'/estratti'.$filePath) / 1048576, 2);?> MB)
 </button>
 </a>
+<?php endif;
+
+$filePath='/regioni/pbf_r/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.R.pbf';
+if(file_exists($_SERVER['DOCUMENT_ROOT'].'/estratti'.$filePath)): ?>
+<a href="<?php echo $baseUrl.$filePath;?>">
+<button type="button" class="btn btn-default btn-lg">
+  <span class="glyphicon glyphicon-download-alt"></span> PBF [cut] (<?php echo number_format(filesize($_SERVER['DOCUMENT_ROOT'].'/estratti'.$filePath) / 1048576, 2);?> MB)
+</button>
+</a>
+<?php endif;
+
+$filePath='/regioni/osm_r/'.$mainData['cod_istat'].'---'.$mainData['safe_name'].'.R.osm.zip';
+if(file_exists($_SERVER['DOCUMENT_ROOT'].'/estratti'.$filePath)): ?>
+<a href="<?php echo $baseUrl.$filePath;?>">
+<button type="button" class="btn btn-default btn-lg">
+  <span class="glyphicon glyphicon-download-alt"></span> OSM [cut] (<?php echo number_format(filesize($_SERVER['DOCUMENT_ROOT'].'/estratti'.$filePath) / 1048576, 2);?> MB)
+</button>
+</a>
 <?php endif; ?>
         </div>
     </div>
