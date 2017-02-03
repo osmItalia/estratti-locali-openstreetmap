@@ -18,7 +18,7 @@
 "JUMBO_3_MUNICIPALITY":"e vengono aggiornati ogni giorno. Questo significa che, una modifica fatta adesso, comparirà negli estratti di domani. <a href='https://www.openstreetmap.org/'>Partecipa</a> e migliora la mappa del tuo Comune!",
 "DESC_DOWNLOAD_1_REGION":"Ogni settimana effettuiamo statistiche sui dati geografici della Regione",
 "DESC_DOWNLOAD_1_MUNICIPALITY":"Ogni settimana effettuiamo statistiche sui dati geografici del Comune di",
-"DESC_DOWNLOAD_2":", per verificare l'andamento del processo di mappatura OpenStreetMap. Confrontiamo quindi questi dati con i valori precedenti e visualizziamo i valori nella tabella qui sotto. <br /><br />I dati vengono ritagliati sul rettangolo che racchiude il confine amministrativo e resi disponibili in formato Pbf (protocol buffer), SHP (Shapefile), Spatialite. Il file in formato SHP, per via delle sue limitazioni tecniche, contiene solo alcune tipologie di dati (layer). Tutti i file usano il sistema di riferimento WGS84.",
+"DESC_DOWNLOAD_2":", per verificare l'andamento del processo di mappatura OpenStreetMap. Confrontiamo quindi questi dati con i valori precedenti e visualizziamo i valori nella tabella qui sotto. <br /><br />I dati vengono ritagliati sul rettangolo che racchiude il confine amministrativo e resi disponibili in formato Pbf (protocol buffer), SHP (Shapefile), Spatialite. Il file in formato SHP, per via delle sue limitazioni tecniche, contiene solo alcune tipologie di dati (layer). Il sistema di riferimento di tutti i layer contenuti nei file è <a href='http://epsg.io/4326'>EPSG:4326</a>.",
 "STATISTICS":"Statistiche",
 "DATA":"Data",
 "STRADE":"Strade",

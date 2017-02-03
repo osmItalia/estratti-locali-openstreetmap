@@ -18,7 +18,7 @@
 "JUMBO_3_MUNICIPALITY":"und werden täglich aktualisiert. Das bedeutet, dass eine Änderung die jetzt vorgenommen wird, mirgen im Extrakt zu sehen sein wird. <a href='https://www.openstreetmap.org/'>Mach mit</a> und verbessere die Karte in deiner Gemeinde!",
 "DESC_DOWNLOAD_1_REGION":"Wir berechnen wöchentlich Statistiken über die geografischen Daten der Region",
 "DESC_DOWNLOAD_1_MUNICIPALITY":"Wir berechnen wöchentlich Statistiken über die geografischen Daten der Gemeinde",
-"DESC_DOWNLOAD_2":", um den Mapping-Status von OpenStreetMap zu verfolgen. Die Werte sind zusammen mit den Ergebnissen der vergangenen Wochen in der Tabelle unten dargestellt. <br /><br />Das Extrakt einhaltet alle Daten in dem Rechteck, welches die Administrative Grenze umfasst und ist in verscheidenen Formaten verfügbar: PBF (protocol buffer), SHP (Shapefile), Spatialite. Das SHP-Format beinhaltet, aus technischen Gründen, nur einen Teil der Daten (layer). Alle files verwenden das Koordinatenreferenzsystem WGS84.",
+"DESC_DOWNLOAD_2":", um den Mapping-Status von OpenStreetMap zu verfolgen. Die Werte sind zusammen mit den Ergebnissen der vergangenen Wochen in der Tabelle unten dargestellt. <br /><br />Das Extrakt einhaltet alle Daten in dem Rechteck, welches die Administrative Grenze umfasst und ist in verscheidenen Formaten verfügbar: PBF (protocol buffer), SHP (Shapefile), Spatialite. Das SHP-Format beinhaltet, aus technischen Gründen, nur einen Teil der Daten (layer). Alle files verwenden das Koordinatenreferenzsystem <a href='http://epsg.io/4326'>EPSG:4326</a>.",
 "STATISTICS":"Statistiken",
 "DATA":"Datum",
 "STRADE":"Straßen",

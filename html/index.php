@@ -41,7 +41,7 @@ Flight::route('/', function () {
     $query = "SELECT osm_id,cod_istat,name,safe_name FROM it_regioni reg ORDER BY safe_name";
     $res = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
     Flight::render(
-        'list.php',
+        'listHome.php',
         array(
             'baseUrl'=>Flight::request()->base,
             'pTitle' => 'Italy',
@@ -73,7 +73,7 @@ Flight::route('/api/@region', function ($region) {
     $arrBbox=explode(',',$mainData['bbox']);
     $arrBbox=array_map('floatval',$arrBbox);
     $mainData['bbox']=json_encode([[min($arrBbox[1],$arrBbox[3]),min($arrBbox[0],$arrBbox[2])],[max($arrBbox[1],$arrBbox[3]),max($arrBbox[0],$arrBbox[2])]]);
- 
+
     $jsonResponse['mainData'] = $mainData;
 
     $query = "SELECT pro.osm_id,pro.cod_istat,pro.name,pro.safe_name FROM it_province pro JOIN it_regioni reg";
@@ -82,16 +82,6 @@ Flight::route('/api/@region', function ($region) {
     $res=$res->fetchAll(PDO::FETCH_ASSOC);
 
     $jsonResponse['list'] = $res;
-
-    /*
-     * href = baseurl + rawurlencode($row['safe_name']), text = $row['name']
-     * filepath = '/regioni/{format}/' + $mainData['cod_istat'] + '---' + $mainData['safe_name'] + '.{extension}'
-     * shape => zip
-     * pbf => pbf
-     * osm => osm.zip
-     * sqlite => sqlite.zip
-     * poly => poly
-     */
 
     Flight::json($jsonResponse);
 });
@@ -117,14 +107,13 @@ Flight::route('/api/@region/@province', function ($region, $province) {
     $db = Flight::db();
     $query = "SELECT com.osm_id,com.cod_istat,com.name,com.safe_name FROM it_province pro JOIN it_regioni reg ON pro.cod_istat_reg=reg.cod_istat JOIN it_comuni com ON com.cod_istat_reg=reg.cod_istat AND com.cod_istat_pro=pro.cod_istat WHERE reg.safe_name=".$db->quote($region)." AND pro.safe_name=".$db->quote($province)." ORDER BY name";
     $res = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
-    //href = baseurl + region + rawurlencode($row['safe_name']), text = $row['name']
     Flight::json(['list' => $res]);
 });
 
 Flight::route('/api/@region/@province/@municipality', function ($region, $province, $municipality) {
     $jsonResponse = [];
     $db = Flight::db();
- 
+
     $query = "SELECT com.osm_id,com.cod_istat,com.name, com.safe_name, pro.name AS prov_name, reg.name AS reg_name,com.bbox,ST_AsGeoJSON(ST_Simplify(com.geom,0.0001),5) FROM it_regioni reg JOIN it_province pro ON reg.cod_istat = pro.cod_istat_reg JOIN it_comuni com ON pro.cod_istat=com.cod_istat_pro WHERE com.safe_name=".$db->quote($municipality)." AND pro.safe_name=".$db->quote($province);
     $res = $db->query($query);
     $mainData=$res->fetchAll(PDO::FETCH_ASSOC);
@@ -136,17 +125,8 @@ Flight::route('/api/@region/@province/@municipality', function ($region, $provin
     $arrBbox=explode(',',$mainData['bbox']);
     $arrBbox=array_map('floatval',$arrBbox);
     $mainData['bbox']=json_encode([[min($arrBbox[1],$arrBbox[3]),min($arrBbox[0],$arrBbox[2])],[max($arrBbox[1],$arrBbox[3]),max($arrBbox[0],$arrBbox[2])]]);
- 
-    $jsonResponse['mainData'] = $mainData;
 
-    /*
-     * filepath = '/comuni/{format}/' + $mainData['cod_istat'] + '---' + $mainData['safe_name'] + '.{extension}'
-     * shape => zip
-     * pbf => pbf
-     * osm => osm.zip
-     * sqlite => sqlite.zip
-     * poly => polyf
-     */
+    $jsonResponse['mainData'] = $mainData;
 
     Flight::json($jsonResponse);
 });
@@ -328,7 +308,11 @@ Flight::route('/@region/@province/@municipality/stats', function ($region, $prov
 });
 
 Flight::map('notFound', function () {
-    echo "404";
+    Flight::render(
+        '404.php',
+        array(
+            'baseUrl'=>Flight::request()->base)
+    );
 });
 
 Flight::start();
